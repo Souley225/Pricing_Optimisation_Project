@@ -1,0 +1,41 @@
+# Configuration de l'optimisation des prix
+
+# Fonction objectif
+objective:
+  type: revenue  # revenue, margin, volume
+  
+  # Pour margin: besoin du cout
+  cost_ratio: 0.6  # Cout = 60% du prix
+
+# Contraintes
+constraints:
+  # Prix minimum et maximum relatifs au prix actuel
+  price_min_ratio: 0.7  # -30%
+  price_max_ratio: 1.3  # +30%
+  
+  # Variation maximale par rapport au prix precedent
+  max_price_change: 0.2  # 20%
+  
+  # Prix absolus (optionnel)
+  absolute_min: 0.5
+  absolute_max: 1000.0
+  
+  # Coherence de gamme
+  maintain_price_hierarchy: true
+
+# Solveur
+solver:
+  method: SLSQP  # SLSQP, trust-constr, L-BFGS-B
+  options:
+    maxiter: 1000
+    ftol: 1e-6
+    
+# Simulation
+simulation:
+  n_scenarios: 100
+  price_variations: [-0.2, -0.1, -0.05, 0, 0.05, 0.1, 0.2]
+
+# Output
+output:
+  dir: data/processed/recommendations
+  format: parquet

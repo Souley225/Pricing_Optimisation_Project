@@ -1,0 +1,70 @@
+# Configuration du feature engineering
+
+# Prix de base par famille de produit (en USD)
+price_base_by_family:
+  AUTOMOTIVE: 25.0
+  BABY CARE: 15.0
+  BEAUTY: 20.0
+  BEVERAGES: 3.5
+  BOOKS: 12.0
+  BREAD/BAKERY: 2.5
+  CELEBRATION: 8.0
+  CLEANING: 5.0
+  DAIRY: 4.0
+  DELI: 6.0
+  EGGS: 3.0
+  FROZEN FOODS: 7.0
+  GROCERY I: 4.5
+  GROCERY II: 3.5
+  HARDWARE: 18.0
+  HOME AND KITCHEN: 22.0
+  HOME APPLIANCES: 45.0
+  HOME CARE: 8.0
+  LADIESWEAR: 28.0
+  LAWN AND GARDEN: 15.0
+  LINGERIE: 18.0
+  LIQUOR,WINE,BEER: 12.0
+  MAGAZINES: 5.0
+  MEATS: 9.0
+  PERSONAL CARE: 7.0
+  PET SUPPLIES: 10.0
+  PLAYERS AND ELECTRONICS: 55.0
+  POULTRY: 8.0
+  PREPARED FOODS: 6.0
+  PRODUCE: 3.0
+  SCHOOL AND OFFICE SUPPLIES: 8.0
+  SEAFOOD: 12.0
+
+# Impact des promotions sur le prix
+promotion:
+  discount_rate: 0.15  # 15% de reduction en promotion
+  
+# Coefficient par magasin (simule la variation geographique)
+store:
+  coefficient_min: 0.85
+  coefficient_max: 1.15
+  seed: 42  # Pour reproductibilite
+
+# Features temporelles a generer
+temporal:
+  - day_of_week
+  - month
+  - year
+  - is_weekend
+  - is_holiday
+  - day_of_month
+  - week_of_year
+  - is_month_start
+  - is_month_end
+  - quarter
+
+# Features de prix
+price:
+  log_transform: true
+  lag_periods: [1, 7, 14, 28]
+  rolling_windows: [7, 14, 28]
+  
+# Encodage des categories
+encoding:
+  method: target  # target, label, or onehot
+  min_samples: 100  # Minimum samples for target encoding

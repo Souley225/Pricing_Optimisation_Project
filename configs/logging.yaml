@@ -1,0 +1,43 @@
+# Configuration du logging
+
+version: 1
+disable_existing_loggers: false
+
+# Format JSON structure
+json_format:
+  enabled: true
+  timestamp_key: timestamp
+  level_key: level
+  message_key: message
+  
+# Niveau de log
+level: ${oc.env:LOG_LEVEL,INFO}
+
+# Processeurs structlog
+processors:
+  - add_log_level
+  - add_timestamp
+  - format_exc_info
+
+# Handlers
+handlers:
+  console:
+    enabled: true
+    format: colored  # colored, json, plain
+    
+  file:
+    enabled: true
+    path: logs/app.log
+    rotation: daily
+    retention: 30  # jours
+
+# Loggers specifiques
+loggers:
+  mlflow:
+    level: WARNING
+  lightgbm:
+    level: WARNING
+  httpx:
+    level: WARNING
+  uvicorn:
+    level: INFO

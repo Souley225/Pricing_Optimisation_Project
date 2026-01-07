@@ -1,0 +1,25 @@
+# Configuration Hydra principale
+
+defaults:
+  - ../data
+  - ../features
+  - ../model
+  - ../train
+  - ../optimize
+  - ../logging
+  - _self_
+
+# Hydra settings
+hydra:
+  run:
+    dir: outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  sweep:
+    dir: multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    subdir: ${hydra.job.num}
+  job:
+    chdir: false
+  output_subdir: null
+
+# Parametres globaux
+seed: 42
+debug: false

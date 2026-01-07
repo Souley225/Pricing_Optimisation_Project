@@ -1,0 +1,23 @@
+# Configuration des chemins de donnees
+raw_dir: data/raw
+interim_dir: data/interim
+processed_dir: data/processed
+
+# Source Kaggle
+kaggle:
+  competition: store-sales-time-series-forecasting
+  files:
+    - train.csv
+    - stores.csv
+    - oil.csv
+    - holidays_events.csv
+    - transactions.csv
+
+# Split temporel
+split:
+  train_ratio: 0.8
+  val_ratio: 0.1
+  test_ratio: 0.1
+  # Date de coupure (calculee automatiquement si null)
+  train_end_date: null
+  val_end_date: null

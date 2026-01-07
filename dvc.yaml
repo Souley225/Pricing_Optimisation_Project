@@ -1,0 +1,73 @@
+stages:
+  make_dataset:
+    cmd: python -m src.data.make_dataset
+    deps:
+      - src/data/make_dataset.py
+      - configs/data.yaml
+      - configs/features.yaml
+    outs:
+      - data/interim/sales_with_price.parquet
+
+  split_dataset:
+    cmd: python -m src.data.split_dataset
+    deps:
+      - src/data/split_dataset.py
+      - data/interim/sales_with_price.parquet
+      - configs/data.yaml
+    outs:
+      - data/processed/train.parquet
+      - data/processed/val.parquet
+      - data/processed/test.parquet
+
+  build_features:
+    cmd: python -m src.features.build_features
+    deps:
+      - src/features/build_features.py
+      - data/processed/train.parquet
+      - data/processed/val.parquet
+      - data/processed/test.parquet
+      - configs/features.yaml
+    outs:
+      - data/processed/train_features.parquet
+      - data/processed/val_features.parquet
+      - data/processed/test_features.parquet
+
+  train:
+    cmd: python -m src.models.train
+    deps:
+      - src/models/train.py
+      - data/processed/train_features.parquet
+      - data/processed/val_features.parquet
+      - configs/model.yaml
+      - configs/train.yaml
+    outs:
+      - models/lightgbm_model.joblib
+      - models/scaler.joblib
+      - models/feature_names.joblib
+    metrics:
+      - mlruns:
+          cache: false
+
+  evaluate:
+    cmd: python -m src.models.evaluate
+    deps:
+      - src/models/evaluate.py
+      - models/lightgbm_model.joblib
+      - models/scaler.joblib
+      - data/processed/test_features.parquet
+    outs:
+      - reports/figures/feature_importance.png:
+          cache: false
+      - reports/figures/predictions_vs_actual.png:
+          cache: false
+
+  optimize:
+    cmd: python -m src.models.optimize_prices
+    deps:
+      - src/models/optimize_prices.py
+      - models/lightgbm_model.joblib
+      - models/scaler.joblib
+      - data/processed/test_features.parquet
+      - configs/optimize.yaml
+    outs:
+      - data/processed/recommendations/recommendations.parquet

@@ -1,0 +1,32 @@
+# Dockerfile pour l'entrainement
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Installer les dependances systeme
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Installer Poetry
+RUN pip install --no-cache-dir poetry==1.7.1
+
+# Copier les fichiers de configuration
+COPY pyproject.toml poetry.lock* ./
+
+# Installer les dependances (sans dev)
+RUN poetry config virtualenvs.create false \
+    && poetry install --no-interaction --no-ansi --only main
+
+# Copier le code source
+COPY src/ ./src/
+COPY configs/ ./configs/
+COPY params.yaml ./
+
+# Variables d'environnement
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+
+# Point d'entree par defaut
+CMD ["python", "-m", "src.models.train"]

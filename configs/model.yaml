@@ -1,0 +1,61 @@
+# Configuration des modeles
+
+# Modele baseline (ElasticNet)
+baseline:
+  type: elasticnet
+  params:
+    alpha: 0.1
+    l1_ratio: 0.5
+    max_iter: 1000
+    random_state: 42
+
+# Modele principal (LightGBM)
+lightgbm:
+  params:
+    objective: regression
+    metric: rmse
+    boosting_type: gbdt
+    num_leaves: 31
+    learning_rate: 0.05
+    feature_fraction: 0.8
+    bagging_fraction: 0.8
+    bagging_freq: 5
+    verbose: -1
+    seed: 42
+  
+  # Parametres d'entrainement
+  training:
+    n_estimators: 1000
+    early_stopping_rounds: 50
+    
+# Tuning Optuna
+optuna:
+  enabled: true
+  n_trials: 50
+  timeout: 3600  # 1 heure max
+  study_name: lightgbm_demand_tuning
+  
+  # Espace de recherche
+  search_space:
+    num_leaves:
+      low: 16
+      high: 128
+    learning_rate:
+      low: 0.01
+      high: 0.2
+      log: true
+    feature_fraction:
+      low: 0.5
+      high: 1.0
+    bagging_fraction:
+      low: 0.5
+      high: 1.0
+    min_child_samples:
+      low: 5
+      high: 100
+
+# Validation temporelle
+validation:
+  type: timeseries
+  n_splits: 5
+  gap: 0  # Jours de gap entre train et val (evite le leakage)

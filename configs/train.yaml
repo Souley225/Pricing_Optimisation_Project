@@ -1,0 +1,42 @@
+# Configuration de l'entrainement
+
+# MLflow
+mlflow:
+  tracking_uri: ${oc.env:MLFLOW_TRACKING_URI,./mlruns}
+  experiment_name: pricing-optimization
+  run_name: null  # Auto-genere si null
+  
+  # Tags a ajouter a chaque run
+  tags:
+    project: pricing-optimization
+    team: data-science
+    
+  # Artefacts a logger
+  log_artifacts:
+    - model
+    - feature_importance
+    - metrics
+
+# Entrainement
+training:
+  seed: 42
+  target_column: sales
+  
+  # Colonnes a exclure des features
+  exclude_columns:
+    - id
+    - date
+    - sales
+    
+  # Gestion des valeurs manquantes
+  handle_missing: median
+  
+  # Scaling
+  scale_features: true
+  scaler_type: standard  # standard, minmax, robust
+
+# Checkpointing
+checkpoint:
+  enabled: true
+  dir: models/checkpoints
+  save_best_only: true
