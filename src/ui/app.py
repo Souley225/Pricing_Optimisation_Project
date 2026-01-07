@@ -1,6 +1,7 @@
 """Interface Streamlit pour l'optimisation des prix."""
 
 import os
+import time
 from typing import Any
 
 import httpx
@@ -27,6 +28,37 @@ def check_api_health() -> bool:
         return response.status_code == 200
     except Exception:
         return False
+
+
+def wake_up_api(timeout: int = 90) -> bool:
+    """Tente de reveiller l'API si elle est endormie (Render Cold Start)."""
+    # Verification initiale rapide
+    if check_api_health():
+        return True
+
+    # Si echec, on lance la procedure de reveil
+    status_placeholder = st.sidebar.empty()
+    status_placeholder.warning("Reveil de l'API en cours...")
+    
+    progress_bar = st.sidebar.progress(0)
+    
+    start_time = time.time()
+    while time.time() - start_time < timeout:
+        # Mise a jour de la progression (estimation)
+        elapsed = time.time() - start_time
+        progress = min(elapsed / 60, 0.9)  # 60s reference pour la barre
+        progress_bar.progress(progress)
+        
+        if check_api_health():
+            progress_bar.empty()
+            status_placeholder.empty()
+            return True
+            
+        time.sleep(2)
+    
+    progress_bar.empty()
+    status_placeholder.empty()
+    return False
 
 
 def get_price_recommendation(
@@ -92,11 +124,11 @@ def render_header() -> None:
     st.markdown("**Systeme de recommandation de prix base sur l'estimation de la demande**")
 
     # Status de l'API
-    api_status = check_api_health()
-    if api_status:
+    if wake_up_api():
         st.sidebar.success("API connectee")
     else:
         st.sidebar.error("API non disponible")
+        st.sidebar.info("Le demarrage sur Render peut prendre 1-2 min.")
 
 
 def render_sidebar() -> dict[str, Any]:
