@@ -54,6 +54,19 @@ Systeme complet d'optimisation des prix base sur l'estimation de la demande. Ce 
 
 ---
 
+## Interface
+
+<p align="center">
+  <img src="docs/images/streamlit_ui.png" alt="Streamlit Dashboard" width="800">
+</p>
+
+Le dashboard Streamlit permet de:
+- Obtenir des recommandations de prix en temps reel
+- Simuler l'impact de differents scenarios de prix
+- Analyser l'elasticite prix pour chaque produit
+
+---
+
 ## Installation
 
 ```bash
