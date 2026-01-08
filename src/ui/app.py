@@ -9,144 +9,258 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-# Configuration de la page - collapsed sidebar for mobile
+# Configuration de la page - Carrefour branded
 st.set_page_config(
-    page_title="Pricing Optimization",
-    page_icon="chart_with_upwards_trend",
+    page_title="Optimisation des Prix",
+    page_icon="shopping_trolley",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
 
 # ============================================================================
-# MOBILE-FIRST CSS STYLES
+# CARREFOUR BRAND CSS STYLES
+# Brand Colors:
+#   - Carrefour Blue: #00387b (primary)
+#   - Carrefour Red: #bb1e10 (accent/CTA)
+#   - Carrefour Orange: #f67828 (secondary)
+#   - Carrefour Green: #237f52 (success)
 # ============================================================================
 st.markdown("""
 <style>
-/* ===== Base Mobile Styles ===== */
-.stApp {
-    max-width: 100%;
+/* ===== Carrefour Brand Variables ===== */
+:root {
+    --carrefour-blue: #00387b;
+    --carrefour-blue-light: #004a9f;
+    --carrefour-blue-dark: #002855;
+    --carrefour-red: #bb1e10;
+    --carrefour-red-light: #d42a1a;
+    --carrefour-orange: #f67828;
+    --carrefour-green: #237f52;
+    --carrefour-white: #ffffff;
+    --carrefour-gray-light: #f5f5f5;
+    --carrefour-gray: #e0e0e0;
+    --carrefour-text: #1a1a1a;
+    --carrefour-text-muted: #666666;
 }
 
-/* Larger touch targets for mobile */
+/* ===== Base Styles ===== */
+.stApp {
+    max-width: 100%;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* ===== Carrefour Header Banner ===== */
+.carrefour-header {
+    background: linear-gradient(135deg, var(--carrefour-blue) 0%, var(--carrefour-blue-dark) 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.carrefour-header h1 {
+    color: white !important;
+    margin: 0 !important;
+    font-size: 1.5rem !important;
+}
+
+.carrefour-header p {
+    color: rgba(255,255,255,0.9);
+    margin: 8px 0 0 0;
+    font-size: 0.95rem;
+}
+
+/* ===== Primary Buttons (Carrefour Red) ===== */
 .stButton > button {
     min-height: 50px !important;
     font-size: 1.1rem !important;
-    border-radius: 12px !important;
+    border-radius: 8px !important;
     margin: 8px 0 !important;
     width: 100% !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
 }
 
 .stButton > button[kind="primary"] {
-    background: linear-gradient(135deg, #2E86AB 0%, #1a5276 100%) !important;
+    background: var(--carrefour-red) !important;
     border: none !important;
-    box-shadow: 0 4px 12px rgba(46, 134, 171, 0.3) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(187, 30, 16, 0.3) !important;
 }
 
 .stButton > button[kind="primary"]:hover {
+    background: var(--carrefour-red-light) !important;
     transform: translateY(-2px) !important;
-    box-shadow: 0 6px 16px rgba(46, 134, 171, 0.4) !important;
+    box-shadow: 0 6px 16px rgba(187, 30, 16, 0.4) !important;
 }
 
-/* Mobile-friendly metrics */
+.stButton > button[kind="secondary"] {
+    background: var(--carrefour-blue) !important;
+    border: none !important;
+    color: white !important;
+}
+
+/* ===== Metrics Cards (Carrefour Style) ===== */
 [data-testid="stMetric"] {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-radius: 12px;
+    background: white;
+    border-radius: 10px;
     padding: 16px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0, 56, 123, 0.1);
+    border-left: 4px solid var(--carrefour-blue);
     margin-bottom: 12px !important;
 }
 
 [data-testid="stMetricLabel"] {
     font-size: 0.85rem !important;
-    color: #6c757d !important;
+    color: var(--carrefour-text-muted) !important;
+    font-weight: 500 !important;
 }
 
 [data-testid="stMetricValue"] {
     font-size: 1.4rem !important;
     font-weight: 700 !important;
-    color: #2E86AB !important;
+    color: var(--carrefour-blue) !important;
 }
 
-/* Info boxes styling - improved contrast */
+[data-testid="stMetricDelta"] > div {
+    color: var(--carrefour-green) !important;
+}
+
+/* ===== Info Boxes (Carrefour Blue) ===== */
 .user-note {
-    background: #f0f7ff;
-    border-left: 4px solid #2E86AB;
+    background: #e8f0f8;
+    border-left: 4px solid var(--carrefour-blue);
     border-radius: 8px;
     padding: 14px 16px;
     margin: 16px 0;
     font-size: 0.92rem;
     line-height: 1.6;
-    color: #1a1a1a;
+    color: var(--carrefour-text);
 }
 
 .user-note strong {
-    color: #1a3a52;
+    color: var(--carrefour-blue-dark);
 }
 
+/* ===== Tip Boxes (Carrefour Orange) ===== */
 .tip-box {
-    background: #fffef5;
-    border-left: 4px solid #d4a000;
+    background: #fff5eb;
+    border-left: 4px solid var(--carrefour-orange);
     border-radius: 8px;
     padding: 14px 16px;
     margin: 16px 0;
     font-size: 0.92rem;
     line-height: 1.6;
-    color: #1a1a1a;
+    color: var(--carrefour-text);
 }
 
 .tip-box strong {
-    color: #5a4800;
+    color: #b85a15;
 }
 
-/* Sidebar mobile optimization */
+/* ===== Sidebar (Carrefour Blue Theme) ===== */
 [data-testid="stSidebar"] {
     min-width: 280px !important;
+    background: linear-gradient(180deg, var(--carrefour-blue) 0%, var(--carrefour-blue-dark) 100%) !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {
+    color: white !important;
 }
 
 [data-testid="stSidebar"] .stNumberInput input,
 [data-testid="stSidebar"] .stTextInput input {
-    font-size: 16px !important; /* Prevents zoom on iOS */
+    font-size: 16px !important;
     min-height: 44px !important;
+    border-radius: 6px !important;
 }
 
-/* Tabs mobile styling */
+[data-testid="stSidebar"] label {
+    color: white !important;
+}
+
+[data-testid="stSidebar"] .stCaption {
+    color: rgba(255,255,255,0.8) !important;
+}
+
+/* ===== Tabs (Carrefour Style) ===== */
 .stTabs [data-baseweb="tab-list"] {
-    gap: 0px;
+    gap: 4px;
     flex-wrap: wrap;
+    background: var(--carrefour-gray-light);
+    border-radius: 10px;
+    padding: 4px;
 }
 
 .stTabs [data-baseweb="tab"] {
     min-height: 48px !important;
-    padding: 12px 16px !important;
+    padding: 12px 20px !important;
     font-size: 0.95rem !important;
     flex: 1;
     justify-content: center;
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+    color: var(--carrefour-text) !important;
 }
 
-/* Expander styling */
+.stTabs [data-baseweb="tab"][aria-selected="true"] {
+    background: var(--carrefour-blue) !important;
+    color: white !important;
+}
+
+/* ===== Expander (Carrefour Style) ===== */
 .streamlit-expanderHeader {
     font-size: 1rem !important;
     font-weight: 600 !important;
+    color: var(--carrefour-blue) !important;
 }
 
-/* Headers */
+/* ===== Headers ===== */
 h1 {
     font-size: 1.6rem !important;
     margin-bottom: 8px !important;
+    color: var(--carrefour-blue) !important;
 }
 
 h2 {
     font-size: 1.3rem !important;
-    color: #2E86AB !important;
+    color: var(--carrefour-blue) !important;
     margin-top: 20px !important;
+    border-bottom: 2px solid var(--carrefour-orange);
+    padding-bottom: 8px;
 }
 
-/* Responsive columns - stack on mobile */
+h3 {
+    color: var(--carrefour-blue-dark) !important;
+}
+
+/* ===== Success/Warning/Info Messages ===== */
+.stSuccess {
+    background-color: #e8f5e9 !important;
+    border-left-color: var(--carrefour-green) !important;
+}
+
+.stWarning {
+    background-color: #fff3e0 !important;
+    border-left-color: var(--carrefour-orange) !important;
+}
+
+.stInfo {
+    background-color: #e3f2fd !important;
+    border-left-color: var(--carrefour-blue) !important;
+}
+
+/* ===== Mobile Responsive ===== */
 @media (max-width: 768px) {
     [data-testid="column"] {
         width: 100% !important;
         flex: 100% !important;
         min-width: 100% !important;
+    }
+    
+    .carrefour-header h1 {
+        font-size: 1.3rem !important;
     }
     
     h1 {
@@ -160,11 +274,21 @@ h2 {
     [data-testid="stMetricValue"] {
         font-size: 1.2rem !important;
     }
+    
+    .stTabs [data-baseweb="tab"] {
+        padding: 10px 12px !important;
+        font-size: 0.85rem !important;
+    }
 }
 
-/* Plotly chart mobile optimization */
+/* ===== Plotly Charts ===== */
 .js-plotly-plot {
     width: 100% !important;
+}
+
+/* ===== Dividers ===== */
+hr {
+    border-color: var(--carrefour-gray) !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -271,9 +395,14 @@ def get_price_simulation(
 
 
 def render_header() -> None:
-    """Affiche l'entete de l'application."""
-    st.title("Optimisation des Prix")
-    st.markdown("**Trouvez le meilleur prix pour maximiser vos revenus**")
+    """Affiche l'entete de l'application avec branding Carrefour."""
+    # Branded header
+    st.markdown("""
+    <div class="carrefour-header">
+        <h1>Optimisation des Prix</h1>
+        <p>Outil d'aide a la decision pour maximiser vos revenus</p>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Note de bienvenue pour utilisateurs non-techniques
     st.markdown("""
@@ -503,19 +632,19 @@ def render_simulation(params: dict[str, Any]) -> None:
             # Graphique interactif - hauteur reduite pour mobile
             fig = go.Figure()
 
-            # Courbe de revenu
+            # Courbe de revenu (Carrefour Blue)
             fig.add_trace(
                 go.Scatter(
                     x=df["price"],
                     y=df["expected_revenue"],
                     mode="lines+markers",
                     name="Revenu (EUR)",
-                    line={"color": "#2E86AB", "width": 3},
+                    line={"color": "#00387b", "width": 3},
                     marker={"size": 10},  # Plus gros pour le tactile
                 )
             )
 
-            # Courbe de volume
+            # Courbe de volume (Carrefour Red)
             fig.add_trace(
                 go.Scatter(
                     x=df["price"],
@@ -523,7 +652,7 @@ def render_simulation(params: dict[str, Any]) -> None:
                     mode="lines+markers",
                     name="Ventes (unites)",
                     yaxis="y2",
-                    line={"color": "#A23B72", "width": 3, "dash": "dot"},
+                    line={"color": "#bb1e10", "width": 3, "dash": "dot"},
                     marker={"size": 10},
                 )
             )
@@ -536,11 +665,11 @@ def render_simulation(params: dict[str, Any]) -> None:
                 annotation_text="Actuel",
             )
             
-            # Prix optimal
+            # Prix optimal (Carrefour Green)
             fig.add_vline(
                 x=best_price,
                 line_dash="solid",
-                line_color="green",
+                line_color="#237f52",
                 annotation_text="Optimal",
             )
 
@@ -570,9 +699,9 @@ def render_simulation(params: dict[str, Any]) -> None:
             st.markdown("""
             <div class="user-note">
                 <strong>Comment lire ce graphique ?</strong><br>
-                • <span style="color: #2E86AB;">Courbe bleue</span> = Revenu (ce que vous gagnez)<br>
-                • <span style="color: #A23B72;">Courbe rose</span> = Nombre de ventes<br>
-                • Ligne verte = Prix qui maximise vos revenus
+                - <span style="color: #00387b; font-weight: bold;">Courbe bleue</span> = Revenu (ce que vous gagnez)<br>
+                - <span style="color: #bb1e10; font-weight: bold;">Courbe rouge</span> = Nombre de ventes<br>
+                - <span style="color: #237f52; font-weight: bold;">Ligne verte</span> = Prix qui maximise vos revenus
             </div>
             """, unsafe_allow_html=True)
 
