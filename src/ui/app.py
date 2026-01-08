@@ -18,260 +18,737 @@ st.set_page_config(
 )
 
 # ============================================================================
-# CARREFOUR BRAND CSS STYLES
-# Brand Colors:
-#   - Carrefour Blue: #00387b (primary)
-#   - Carrefour Red: #bb1e10 (accent/CTA)
-#   - Carrefour Orange: #f67828 (secondary)
-#   - Carrefour Green: #237f52 (success)
+# PREMIUM DESIGN SYSTEM - World-Class UI/UX
+# Enhanced Carrefour Brand with Glassmorphism & Modern Effects
 # ============================================================================
 st.markdown("""
 <style>
-/* ===== Carrefour Brand Variables ===== */
+/* ===== Google Fonts Import ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ===== CSS Keyframe Animations ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(0, 56, 123, 0.3); }
+    50% { box-shadow: 0 0 30px rgba(0, 56, 123, 0.5); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes countUp {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* ===== Premium Design Variables ===== */
 :root {
-    --carrefour-blue: #00387b;
-    --carrefour-blue-light: #004a9f;
-    --carrefour-blue-dark: #002855;
-    --carrefour-red: #bb1e10;
-    --carrefour-red-light: #d42a1a;
-    --carrefour-orange: #f67828;
-    --carrefour-green: #237f52;
-    --carrefour-white: #ffffff;
-    --carrefour-gray-light: #f5f5f5;
-    --carrefour-gray: #e0e0e0;
-    --carrefour-text: #1a1a1a;
-    --carrefour-text-muted: #666666;
+    /* Primary Palette - Refined Carrefour */
+    --primary-gradient: linear-gradient(135deg, #0A2463 0%, #1B3A8C 50%, #00387b 100%);
+    --primary-blue: #0A2463;
+    --primary-blue-light: #1B3A8C;
+    --primary-blue-dark: #061539;
+    
+    /* Accent Colors - Vibrant & Modern */
+    --accent-red: #D62828;
+    --accent-red-light: #E85454;
+    --accent-red-glow: rgba(214, 40, 40, 0.4);
+    --accent-orange: #FF9F1C;
+    --accent-orange-light: #FFB347;
+    --success-green: #06D6A0;
+    --success-green-light: #34E8B8;
+    
+    /* Neutral Palette */
+    --bg-primary: #FAFBFC;
+    --bg-secondary: #F0F2F5;
+    --bg-card: #FFFFFF;
+    --bg-glass: rgba(255, 255, 255, 0.85);
+    --bg-glass-dark: rgba(10, 36, 99, 0.95);
+    
+    /* Text Colors */
+    --text-primary: #1A1D21;
+    --text-secondary: #4A5568;
+    --text-muted: #718096;
+    --text-inverse: #FFFFFF;
+    
+    /* Shadows - Layered Depth */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
+    --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.15);
+    --shadow-glow-blue: 0 8px 32px rgba(10, 36, 99, 0.25);
+    --shadow-glow-red: 0 8px 32px rgba(214, 40, 40, 0.25);
+    --shadow-glow-green: 0 8px 32px rgba(6, 214, 160, 0.25);
+    
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+    
+    /* Transitions */
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Typography */
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-/* ===== Base Styles ===== */
+/* ===== Global Reset & Base ===== */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
 .stApp {
-    max-width: 100%;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: var(--font-sans) !important;
+    background: var(--bg-primary) !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* ===== Carrefour Header Banner ===== */
-.carrefour-header {
-    background: linear-gradient(135deg, var(--carrefour-blue) 0%, var(--carrefour-blue-dark) 100%);
-    color: white;
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
+/* Hide Streamlit branding elements */
+#MainMenu, footer, header[data-testid="stHeader"] {
+    visibility: hidden;
+    height: 0;
+}
+
+/* ===== Premium Header with Glassmorphism ===== */
+.premium-header {
+    background: var(--primary-gradient);
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+    color: var(--text-inverse);
+    padding: 28px 32px;
+    border-radius: var(--radius-lg);
+    margin-bottom: 24px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-glow-blue);
+}
+
+.premium-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.05) 100%);
+    pointer-events: none;
+}
+
+.premium-header::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.premium-header h1 {
+    color: var(--text-inverse) !important;
+    margin: 0 !important;
+    font-size: 1.75rem !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+.premium-header p {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 10px 0 0 0;
+    font-size: 1rem;
+    font-weight: 400;
+    position: relative;
+    z-index: 1;
+}
+
+/* Legacy header support */
+.carrefour-header {
+    background: var(--primary-gradient);
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+    color: var(--text-inverse);
+    padding: 28px 32px;
+    border-radius: var(--radius-lg);
+    margin-bottom: 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-glow-blue);
 }
 
 .carrefour-header h1 {
-    color: white !important;
+    color: var(--text-inverse) !important;
     margin: 0 !important;
-    font-size: 1.5rem !important;
+    font-size: 1.75rem !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em;
 }
 
 .carrefour-header p {
-    color: rgba(255,255,255,0.9);
-    margin: 8px 0 0 0;
-    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 10px 0 0 0;
+    font-size: 1rem;
 }
 
-/* ===== Primary Buttons (Carrefour Red) ===== */
-.stButton > button {
-    min-height: 50px !important;
-    font-size: 1.1rem !important;
-    border-radius: 8px !important;
-    margin: 8px 0 !important;
-    width: 100% !important;
-    font-weight: 600 !important;
-    transition: all 0.2s ease !important;
-}
-
-.stButton > button[kind="primary"] {
-    background: var(--carrefour-red) !important;
-    border: none !important;
-    color: white !important;
-    box-shadow: 0 4px 12px rgba(187, 30, 16, 0.3) !important;
-}
-
-.stButton > button[kind="primary"]:hover {
-    background: var(--carrefour-red-light) !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 16px rgba(187, 30, 16, 0.4) !important;
-}
-
-.stButton > button[kind="secondary"] {
-    background: var(--carrefour-blue) !important;
-    border: none !important;
-    color: white !important;
-}
-
-/* ===== Metrics Cards (Carrefour Style) ===== */
-[data-testid="stMetric"] {
-    background: white;
-    border-radius: 10px;
-    padding: 16px !important;
-    box-shadow: 0 2px 8px rgba(0, 56, 123, 0.1);
-    border-left: 4px solid var(--carrefour-blue);
-    margin-bottom: 12px !important;
-}
-
-[data-testid="stMetricLabel"] {
-    font-size: 0.85rem !important;
-    color: var(--carrefour-text-muted) !important;
-    font-weight: 500 !important;
-}
-
-[data-testid="stMetricValue"] {
-    font-size: 1.4rem !important;
-    font-weight: 700 !important;
-    color: var(--carrefour-blue) !important;
-}
-
-[data-testid="stMetricDelta"] > div {
-    color: var(--carrefour-green) !important;
-}
-
-/* ===== Info Boxes (Carrefour Blue) ===== */
+/* ===== Premium Info Cards ===== */
 .user-note {
-    background: #e8f0f8;
-    border-left: 4px solid var(--carrefour-blue);
-    border-radius: 8px;
-    padding: 14px 16px;
-    margin: 16px 0;
-    font-size: 0.92rem;
-    line-height: 1.6;
-    color: var(--carrefour-text);
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(10, 36, 99, 0.1);
+    border-left: 4px solid var(--primary-blue);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    margin: 20px 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+    box-shadow: var(--shadow-sm);
+    animation: fadeInUp 0.5s ease-out forwards;
 }
 
 .user-note strong {
-    color: var(--carrefour-blue-dark);
+    color: var(--primary-blue);
+    font-weight: 600;
 }
 
-/* ===== Tip Boxes (Carrefour Orange) ===== */
 .tip-box {
-    background: #fff5eb;
-    border-left: 4px solid var(--carrefour-orange);
-    border-radius: 8px;
-    padding: 14px 16px;
-    margin: 16px 0;
-    font-size: 0.92rem;
-    line-height: 1.6;
-    color: var(--carrefour-text);
+    background: linear-gradient(135deg, #FFF8F0 0%, #FFF5EB 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 159, 28, 0.2);
+    border-left: 4px solid var(--accent-orange);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    margin: 20px 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+    box-shadow: var(--shadow-sm);
+    animation: fadeInUp 0.5s ease-out forwards;
 }
 
 .tip-box strong {
-    color: #b85a15;
+    color: #CC7000;
+    font-weight: 600;
 }
 
-/* ===== Sidebar (Carrefour Blue Theme) ===== */
+/* ===== Success Card ===== */
+.success-card {
+    background: linear-gradient(135deg, #E6FFF5 0%, #D4F7E8 100%);
+    border: 1px solid rgba(6, 214, 160, 0.3);
+    border-left: 4px solid var(--success-green);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    margin: 20px 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+    box-shadow: var(--shadow-glow-green);
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* ===== Premium Buttons ===== */
+.stButton > button {
+    font-family: var(--font-sans) !important;
+    min-height: 52px !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.01em;
+    border-radius: var(--radius-md) !important;
+    margin: 10px 0 !important;
+    width: 100% !important;
+    transition: all var(--transition-base) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.stButton > button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.stButton > button:hover::before {
+    left: 100%;
+}
+
+.stButton > button[kind="primary"] {
+    background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-red-light) 100%) !important;
+    border: none !important;
+    color: var(--text-inverse) !important;
+    box-shadow: var(--shadow-glow-red) !important;
+}
+
+.stButton > button[kind="primary"]:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 12px 40px rgba(214, 40, 40, 0.4) !important;
+}
+
+.stButton > button[kind="primary"]:active {
+    transform: translateY(-1px) scale(0.98) !important;
+}
+
+.stButton > button[kind="secondary"] {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%) !important;
+    border: none !important;
+    color: var(--text-inverse) !important;
+    box-shadow: var(--shadow-glow-blue) !important;
+}
+
+.stButton > button[kind="secondary"]:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 12px 40px rgba(10, 36, 99, 0.4) !important;
+}
+
+/* ===== Premium Metric Cards ===== */
+[data-testid="stMetric"] {
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    padding: 20px !important;
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-left: 4px solid var(--primary-blue);
+    margin-bottom: 16px !important;
+    transition: all var(--transition-base);
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+[data-testid="stMetric"]:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+[data-testid="stMetricLabel"] {
+    font-family: var(--font-sans) !important;
+    font-size: 0.85rem !important;
+    color: var(--text-muted) !important;
+    font-weight: 500 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+[data-testid="stMetricValue"] {
+    font-family: var(--font-sans) !important;
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    color: var(--primary-blue) !important;
+    animation: countUp 0.6s ease-out forwards;
+}
+
+[data-testid="stMetricDelta"] > div {
+    font-family: var(--font-sans) !important;
+    font-weight: 600 !important;
+}
+
+[data-testid="stMetricDelta"] svg + div,
+[data-testid="stMetricDelta"] > div:first-child {
+    color: #0B5E3D !important;
+}
+
+/* Negative delta styling */
+[data-testid="stMetricDelta"][data-testid*="negative"] > div {
+    color: var(--accent-red) !important;
+}
+
+/* ===== Premium Sidebar ===== */
 [data-testid="stSidebar"] {
-    min-width: 280px !important;
-    background: linear-gradient(180deg, var(--carrefour-blue) 0%, var(--carrefour-blue-dark) 100%) !important;
+    min-width: 300px !important;
+    background: var(--bg-glass-dark) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-testid="stSidebar"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(10, 36, 99, 0.98) 0%, rgba(6, 21, 57, 0.99) 100%);
+    z-index: -1;
 }
 
 [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {
-    color: white !important;
+    color: var(--text-inverse) !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] h1,
+[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] h2,
+[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] h3 {
+    color: var(--text-inverse) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 [data-testid="stSidebar"] .stNumberInput input,
 [data-testid="stSidebar"] .stTextInput input {
+    font-family: var(--font-sans) !important;
     font-size: 16px !important;
-    min-height: 44px !important;
-    border-radius: 6px !important;
+    min-height: 48px !important;
+    border-radius: var(--radius-sm) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: var(--text-inverse) !important;
+    transition: all var(--transition-fast);
+}
+
+[data-testid="stSidebar"] .stNumberInput input:focus,
+[data-testid="stSidebar"] .stTextInput input:focus {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: var(--accent-orange) !important;
+    box-shadow: 0 0 0 3px rgba(255, 159, 28, 0.2) !important;
 }
 
 [data-testid="stSidebar"] label {
-    color: white !important;
+    font-family: var(--font-sans) !important;
+    color: var(--text-inverse) !important;
+    font-weight: 500 !important;
 }
 
 [data-testid="stSidebar"] .stCaption {
-    color: rgba(255,255,255,0.8) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
 }
 
-/* ===== Tabs (Carrefour Style) ===== */
+[data-testid="stSidebar"] hr {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    margin: 1.5rem 0 !important;
+}
+
+/* ===== Modern Pill Tabs ===== */
 .stTabs [data-baseweb="tab-list"] {
-    gap: 4px;
-    flex-wrap: wrap;
-    background: var(--carrefour-gray-light);
-    border-radius: 10px;
-    padding: 4px;
+    gap: 6px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: 6px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .stTabs [data-baseweb="tab"] {
-    min-height: 48px !important;
-    padding: 12px 20px !important;
+    font-family: var(--font-sans) !important;
+    min-height: 52px !important;
+    padding: 14px 24px !important;
     font-size: 0.95rem !important;
+    font-weight: 500 !important;
     flex: 1;
     justify-content: center;
-    border-radius: 8px !important;
-    font-weight: 500 !important;
-    color: var(--carrefour-text) !important;
+    border-radius: var(--radius-md) !important;
+    color: var(--text-secondary) !important;
+    transition: all var(--transition-base) !important;
+    position: relative;
+}
+
+.stTabs [data-baseweb="tab"]:hover:not([aria-selected="true"]) {
+    background: rgba(10, 36, 99, 0.05) !important;
+    color: var(--primary-blue) !important;
 }
 
 .stTabs [data-baseweb="tab"][aria-selected="true"] {
-    background: var(--carrefour-blue) !important;
-    color: white !important;
+    background: var(--bg-card) !important;
+    color: var(--primary-blue) !important;
+    font-weight: 600 !important;
+    box-shadow: var(--shadow-md) !important;
 }
 
-/* ===== Expander (Carrefour Style) ===== */
+.stTabs [data-baseweb="tab-highlight"] {
+    display: none !important;
+}
+
+.stTabs [data-baseweb="tab-border"] {
+    display: none !important;
+}
+
+/* ===== Premium Expanders ===== */
 .streamlit-expanderHeader {
+    font-family: var(--font-sans) !important;
     font-size: 1rem !important;
     font-weight: 600 !important;
-    color: var(--carrefour-blue) !important;
+    color: var(--primary-blue) !important;
+    padding: 16px 20px !important;
+    background: var(--bg-secondary) !important;
+    border-radius: var(--radius-md) !important;
+    transition: all var(--transition-fast);
 }
 
-/* ===== Headers ===== */
+.streamlit-expanderHeader:hover {
+    background: var(--bg-card) !important;
+    box-shadow: var(--shadow-sm);
+}
+
+details[open] .streamlit-expanderHeader {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.streamlit-expanderContent {
+    background: var(--bg-card) !important;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-top: none;
+    border-radius: 0 0 var(--radius-md) var(--radius-md) !important;
+    padding: 20px !important;
+}
+
+/* ===== Typography ===== */
 h1 {
-    font-size: 1.6rem !important;
-    margin-bottom: 8px !important;
-    color: var(--carrefour-blue) !important;
+    font-family: var(--font-sans) !important;
+    font-size: 1.75rem !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px !important;
+    color: var(--primary-blue) !important;
 }
 
 h2 {
-    font-size: 1.3rem !important;
-    color: var(--carrefour-blue) !important;
-    margin-top: 20px !important;
-    border-bottom: 2px solid var(--carrefour-orange);
-    padding-bottom: 8px;
+    font-family: var(--font-sans) !important;
+    font-size: 1.35rem !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.01em;
+    color: var(--primary-blue) !important;
+    margin-top: 24px !important;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--accent-orange);
+    display: inline-block;
 }
 
 h3 {
-    color: var(--carrefour-blue-dark) !important;
+    font-family: var(--font-sans) !important;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    color: var(--primary-blue-dark) !important;
 }
 
-/* ===== Success/Warning/Info Messages ===== */
+p, li, span {
+    font-family: var(--font-sans) !important;
+}
+
+/* ===== Alert Messages ===== */
 .stSuccess {
-    background-color: #e8f5e9 !important;
-    border-left-color: var(--carrefour-green) !important;
+    background: linear-gradient(135deg, #E6FFF5 0%, #D4F7E8 100%) !important;
+    border-left: 4px solid #0B5E3D !important;
+    border-radius: var(--radius-md) !important;
+    box-shadow: var(--shadow-sm);
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.stSuccess > div {
+    color: #0B5E3D !important;
+}
+
+.stSuccess p, .stSuccess span, .stSuccess strong {
+    color: #0B5E3D !important;
 }
 
 .stWarning {
-    background-color: #fff3e0 !important;
-    border-left-color: var(--carrefour-orange) !important;
+    background: linear-gradient(135deg, #FFF8F0 0%, #FFF5EB 100%) !important;
+    border-left: 4px solid #B45309 !important;
+    border-radius: var(--radius-md) !important;
+    box-shadow: var(--shadow-sm);
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.stWarning > div {
+    color: #92400E !important;
+}
+
+.stWarning p, .stWarning span, .stWarning strong {
+    color: #92400E !important;
 }
 
 .stInfo {
-    background-color: #e3f2fd !important;
-    border-left-color: var(--carrefour-blue) !important;
+    background: linear-gradient(135deg, #EBF4FF 0%, #E0ECFF 100%) !important;
+    border-left: 4px solid var(--primary-blue) !important;
+    border-radius: var(--radius-md) !important;
+    box-shadow: var(--shadow-sm);
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.stInfo > div {
+    color: #1E3A5F !important;
+}
+
+.stInfo p, .stInfo span, .stInfo strong {
+    color: #1E3A5F !important;
+}
+
+.stError {
+    background: linear-gradient(135deg, #FFF0F0 0%, #FFE5E5 100%) !important;
+    border-left: 4px solid var(--accent-red) !important;
+    border-radius: var(--radius-md) !important;
+    box-shadow: var(--shadow-sm);
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.stError > div {
+    color: #991B1B !important;
+}
+
+.stError p, .stError span, .stError strong {
+    color: #991B1B !important;
+}
+
+/* ===== Sliders ===== */
+.stSlider > div > div > div {
+    background: var(--accent-orange) !important;
+}
+
+.stSlider [data-baseweb="slider"] [role="slider"] {
+    background: var(--accent-orange) !important;
+    border: 3px solid white !important;
+    box-shadow: var(--shadow-md) !important;
+    width: 20px !important;
+    height: 20px !important;
+}
+
+/* ===== Checkbox ===== */
+.stCheckbox > label > div[data-testid="stCheckbox"] > div {
+    border-color: var(--primary-blue) !important;
+}
+
+.stCheckbox > label > div[data-testid="stCheckbox"] > div[aria-checked="true"] {
+    background: var(--primary-blue) !important;
+    border-color: var(--primary-blue) !important;
+}
+
+/* ===== Plotly Charts Wrapper ===== */
+.js-plotly-plot {
+    width: 100% !important;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.plotly .modebar {
+    right: 10px !important;
+    top: 10px !important;
+}
+
+/* ===== Dividers ===== */
+hr {
+    border: none !important;
+    height: 1px !important;
+    background: linear-gradient(90deg, transparent, var(--bg-secondary), transparent) !important;
+    margin: 24px 0 !important;
+}
+
+/* ===== Spinner / Loading ===== */
+.stSpinner > div {
+    border-top-color: var(--primary-blue) !important;
+}
+
+/* ===== DataFrames ===== */
+.stDataFrame {
+    border-radius: var(--radius-md) !important;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+[data-testid="stDataFrame"] > div {
+    border-radius: var(--radius-md) !important;
 }
 
 /* ===== Mobile Responsive ===== */
 @media (max-width: 768px) {
+    .premium-header, .carrefour-header {
+        padding: 20px 16px;
+        border-radius: var(--radius-md);
+    }
+    
+    .premium-header h1, .carrefour-header h1 {
+        font-size: 1.35rem !important;
+    }
+    
+    .premium-header p, .carrefour-header p {
+        font-size: 0.9rem;
+    }
+    
     [data-testid="column"] {
         width: 100% !important;
         flex: 100% !important;
         min-width: 100% !important;
     }
     
-    .carrefour-header h1 {
-        font-size: 1.3rem !important;
-    }
-    
     h1 {
-        font-size: 1.4rem !important;
+        font-size: 1.5rem !important;
     }
     
     h2 {
         font-size: 1.2rem !important;
     }
     
+    [data-testid="stMetric"] {
+        padding: 16px !important;
+    }
+    
     [data-testid="stMetricValue"] {
+        font-size: 1.3rem !important;
+    }
+    
+    .stTabs [data-baseweb="tab-list"] {
+        padding: 4px;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        padding: 12px 16px !important;
+        font-size: 0.9rem !important;
+        min-height: 48px !important;
+    }
+    
+    .stButton > button {
+        min-height: 48px !important;
+        font-size: 0.95rem !important;
+    }
+    
+    .user-note, .tip-box, .success-card {
+        padding: 14px 16px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .premium-header h1, .carrefour-header h1 {
         font-size: 1.2rem !important;
     }
     
@@ -279,16 +756,41 @@ h3 {
         padding: 10px 12px !important;
         font-size: 0.85rem !important;
     }
+    
+    h1 {
+        font-size: 1.3rem !important;
+    }
+    
+    h2 {
+        font-size: 1.1rem !important;
+        display: block;
+    }
 }
 
-/* ===== Plotly Charts ===== */
-.js-plotly-plot {
-    width: 100% !important;
+/* ===== Print Styles ===== */
+@media print {
+    .stButton, [data-testid="stSidebar"] {
+        display: none !important;
+    }
+    
+    .premium-header, .carrefour-header {
+        background: var(--primary-blue) !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
 }
 
-/* ===== Dividers ===== */
-hr {
-    border-color: var(--carrefour-gray) !important;
+/* ===== Accessibility Focus States ===== */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 3px solid var(--accent-orange) !important;
+    outline-offset: 2px;
+}
+
+/* ===== Smooth Scroll for Anchor Links ===== */
+[id] {
+    scroll-margin-top: 100px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -629,22 +1131,27 @@ def render_simulation(params: dict[str, Any]) -> None:
             
             st.success(f"**Prix optimal trouve: {best_price:.2f} EUR** (Revenu max: {best_revenue:.2f} EUR)")
 
-            # Graphique interactif - hauteur reduite pour mobile
+            # Graphique interactif - Premium styling
             fig = go.Figure()
 
-            # Courbe de revenu (Carrefour Blue)
+            # Courbe de revenu (Premium Blue with gradient effect)
             fig.add_trace(
                 go.Scatter(
                     x=df["price"],
                     y=df["expected_revenue"],
                     mode="lines+markers",
                     name="Revenu (EUR)",
-                    line={"color": "#00387b", "width": 3},
-                    marker={"size": 10},  # Plus gros pour le tactile
+                    line={"color": "#0A2463", "width": 3, "shape": "spline"},
+                    marker={
+                        "size": 12,
+                        "color": "#0A2463",
+                        "line": {"color": "#FFFFFF", "width": 2}
+                    },
+                    hovertemplate="<b>Prix:</b> %{x:.2f} EUR<br><b>Revenu:</b> %{y:.2f} EUR<extra></extra>",
                 )
             )
 
-            # Courbe de volume (Carrefour Red)
+            # Courbe de volume (Premium Red)
             fig.add_trace(
                 go.Scatter(
                     x=df["price"],
@@ -652,8 +1159,14 @@ def render_simulation(params: dict[str, Any]) -> None:
                     mode="lines+markers",
                     name="Ventes (unites)",
                     yaxis="y2",
-                    line={"color": "#bb1e10", "width": 3, "dash": "dot"},
-                    marker={"size": 10},
+                    line={"color": "#D62828", "width": 3, "dash": "dot", "shape": "spline"},
+                    marker={
+                        "size": 12,
+                        "color": "#D62828",
+                        "symbol": "diamond",
+                        "line": {"color": "#FFFFFF", "width": 2}
+                    },
+                    hovertemplate="<b>Prix:</b> %{x:.2f} EUR<br><b>Ventes:</b> %{y:.0f} unites<extra></extra>",
                 )
             )
 
@@ -661,24 +1174,43 @@ def render_simulation(params: dict[str, Any]) -> None:
             fig.add_vline(
                 x=params["current_price"],
                 line_dash="dash",
-                line_color="gray",
+                line_color="#718096",
+                line_width=2,
                 annotation_text="Actuel",
+                annotation_font_color="#718096",
             )
             
-            # Prix optimal (Carrefour Green)
+            # Prix optimal (Success Green)
             fig.add_vline(
                 x=best_price,
                 line_dash="solid",
-                line_color="#237f52",
+                line_color="#06D6A0",
+                line_width=3,
                 annotation_text="Optimal",
+                annotation_font_color="#06D6A0",
+                annotation_font_size=12,
+                annotation_font_weight=600,
             )
 
             fig.update_layout(
                 title="",
                 xaxis_title="Prix (EUR)",
                 yaxis_title="Revenu (EUR)",
+                xaxis={
+                    "title_font": {"family": "Inter, sans-serif", "size": 13, "color": "#4A5568"},
+                    "tickfont": {"family": "Inter, sans-serif", "size": 11, "color": "#718096"},
+                    "gridcolor": "rgba(0,0,0,0.05)",
+                    "zerolinecolor": "rgba(0,0,0,0.1)",
+                },
+                yaxis={
+                    "title_font": {"family": "Inter, sans-serif", "size": 13, "color": "#0A2463"},
+                    "tickfont": {"family": "Inter, sans-serif", "size": 11, "color": "#718096"},
+                    "gridcolor": "rgba(0,0,0,0.05)",
+                },
                 yaxis2={
                     "title": "Ventes",
+                    "title_font": {"family": "Inter, sans-serif", "size": 13, "color": "#D62828"},
+                    "tickfont": {"family": "Inter, sans-serif", "size": 11, "color": "#718096"},
                     "overlaying": "y",
                     "side": "right",
                 },
@@ -688,20 +1220,36 @@ def render_simulation(params: dict[str, Any]) -> None:
                     "y": 1.02,
                     "xanchor": "center",
                     "x": 0.5,
+                    "font": {"family": "Inter, sans-serif", "size": 12},
+                    "bgcolor": "rgba(255,255,255,0.9)",
+                    "bordercolor": "rgba(0,0,0,0.1)",
+                    "borderwidth": 1,
                 },
-                height=350,  # Reduit pour mobile
-                margin={"l": 50, "r": 50, "t": 30, "b": 50},
+                height=380,
+                margin={"l": 60, "r": 60, "t": 40, "b": 60},
+                plot_bgcolor="rgba(250,251,252,1)",
+                paper_bgcolor="rgba(255,255,255,1)",
+                hoverlabel={
+                    "bgcolor": "#0A2463",
+                    "font_size": 13,
+                    "font_family": "Inter, sans-serif",
+                    "font_color": "white",
+                    "bordercolor": "#0A2463",
+                },
             )
 
             st.plotly_chart(fig, use_container_width=True)
             
-            # Aide a la lecture
+            # Aide a la lecture - Premium styled
             st.markdown("""
             <div class="user-note">
                 <strong>Comment lire ce graphique ?</strong><br>
-                - <span style="color: #00387b; font-weight: bold;">Courbe bleue</span> = Revenu (ce que vous gagnez)<br>
-                - <span style="color: #bb1e10; font-weight: bold;">Courbe rouge</span> = Nombre de ventes<br>
-                - <span style="color: #237f52; font-weight: bold;">Ligne verte</span> = Prix qui maximise vos revenus
+                <span style="display: inline-block; width: 12px; height: 12px; background: #0A2463; border-radius: 50%; margin-right: 8px;"></span>
+                <span style="color: #0A2463; font-weight: 600;">Courbe bleue</span> = Revenu (ce que vous gagnez)<br>
+                <span style="display: inline-block; width: 12px; height: 12px; background: #D62828; border-radius: 50%; margin-right: 8px;"></span>
+                <span style="color: #D62828; font-weight: 600;">Courbe rouge</span> = Nombre de ventes<br>
+                <span style="display: inline-block; width: 12px; height: 12px; background: #06D6A0; border-radius: 50%; margin-right: 8px;"></span>
+                <span style="color: #06D6A0; font-weight: 600;">Ligne verte</span> = Prix qui maximise vos revenus
             </div>
             """, unsafe_allow_html=True)
 
