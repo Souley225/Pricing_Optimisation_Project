@@ -810,8 +810,13 @@ def check_api_health() -> bool:
 
 def wake_up_api(timeout: int = 90) -> bool:
     """Tente de reveiller l'API si elle est endormie (Render Cold Start)."""
+    # Check if we already verified the API is healthy in this session
+    if st.session_state.get("api_healthy", False):
+        return True
+    
     # Verification initiale rapide
     if check_api_health():
+        st.session_state.api_healthy = True
         return True
 
     # Si echec, on lance la procedure de reveil
@@ -830,6 +835,7 @@ def wake_up_api(timeout: int = 90) -> bool:
         if check_api_health():
             progress_bar.empty()
             status_placeholder.empty()
+            st.session_state.api_healthy = True
             return True
             
         time.sleep(2)
@@ -1012,6 +1018,12 @@ def render_recommendation(params: dict[str, Any]) -> None:
     """Affiche la recommandation de prix."""
     st.header("Recommandation de Prix")
     
+    # Initialize session state for recommendation result
+    if "recommendation_result" not in st.session_state:
+        st.session_state.recommendation_result = None
+    if "recommendation_params" not in st.session_state:
+        st.session_state.recommendation_params = None
+    
     # Note explicative pour utilisateurs non-techniques
     st.markdown("""
     <div class="tip-box">
@@ -1021,6 +1033,9 @@ def render_recommendation(params: dict[str, Any]) -> None:
     </div>
     """, unsafe_allow_html=True)
 
+    # Create a unique key based on current params to detect changes
+    current_params_key = f"{params['product_id']}_{params['current_price']}_{params['current_volume']}_{params['constraints']}"
+
     if st.button("Calculer le prix optimal", type="primary", use_container_width=True):
         with st.spinner("Analyse en cours..."):
             result = get_price_recommendation(
@@ -1029,50 +1044,61 @@ def render_recommendation(params: dict[str, Any]) -> None:
                 current_volume=params["current_volume"],
                 constraints=params["constraints"],
             )
+        # Store result in session state
+        st.session_state.recommendation_result = result
+        st.session_state.recommendation_params = current_params_key
 
-        if result:
-            # Resultat principal mis en avant
-            st.success(f"**Prix recommande: {result['recommended_price']:.2f} EUR** ({result['price_change_pct']:+.1f}% vs actuel)")
+    # Display result if available (persisted across reruns)
+    result = st.session_state.recommendation_result
+    
+    # Clear result if params changed
+    if st.session_state.recommendation_params != current_params_key:
+        result = None
+        st.session_state.recommendation_result = None
+
+    if result:
+        # Resultat principal mis en avant
+        st.success(f"**Prix recommande: {result['recommended_price']:.2f} EUR** ({result['price_change_pct']:+.1f}% vs actuel)")
+        
+        st.markdown("---")
+        st.subheader("Impact estime")
+        
+        # Layout mobile-friendly: 2 colonnes au lieu de 4
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.metric(
+                "Revenu attendu",
+                f"{result['expected_revenue']:.2f} EUR",
+                f"{result['revenue_uplift_pct']:+.1f}%",
+                help="Le chiffre d'affaires prevu avec ce nouveau prix"
+            )
             
-            st.markdown("---")
-            st.subheader("Impact estime")
+            st.metric(
+                "Ventes prevues",
+                f"{result['expected_volume']:.0f} unites",
+                help="Nombre d'unites que vous devriez vendre"
+            )
+
+        with col2:
+            st.metric(
+                "Marge attendue",
+                f"{result['expected_margin']:.2f} EUR",
+                help="Le benefice estime sur les ventes"
+            )
             
-            # Layout mobile-friendly: 2 colonnes au lieu de 4
-            col1, col2 = st.columns(2)
+            # Interpretation simple
+            if result['revenue_uplift_pct'] > 0:
+                st.success("Ce prix devrait augmenter vos revenus")
+            elif result['revenue_uplift_pct'] < 0:
+                st.warning("Ce prix pourrait reduire vos revenus")
+            else:
+                st.info("Le prix actuel semble optimal")
 
-            with col1:
-                st.metric(
-                    "Revenu attendu",
-                    f"{result['expected_revenue']:.2f} EUR",
-                    f"{result['revenue_uplift_pct']:+.1f}%",
-                    help="Le chiffre d'affaires prevu avec ce nouveau prix"
-                )
-                
-                st.metric(
-                    "Ventes prevues",
-                    f"{result['expected_volume']:.0f} unites",
-                    help="Nombre d'unites que vous devriez vendre"
-                )
-
-            with col2:
-                st.metric(
-                    "Marge attendue",
-                    f"{result['expected_margin']:.2f} EUR",
-                    help="Le benefice estime sur les ventes"
-                )
-                
-                # Interpretation simple
-                if result['revenue_uplift_pct'] > 0:
-                    st.success("Ce prix devrait augmenter vos revenus")
-                elif result['revenue_uplift_pct'] < 0:
-                    st.warning("Ce prix pourrait reduire vos revenus")
-                else:
-                    st.info("Le prix actuel semble optimal")
-
-            # Details techniques dans un expander
-            with st.expander("Details techniques"):
-                st.caption(f"Version du modele: {result['model_version']}")
-                st.caption(f"Produit analyse: {params['product_id']}")
+        # Details techniques dans un expander
+        with st.expander("Details techniques"):
+            st.caption(f"Version du modele: {result['model_version']}")
+            st.caption(f"Produit analyse: {params['product_id']}")
 
 
 def render_simulation(params: dict[str, Any]) -> None:
@@ -1316,23 +1342,55 @@ def render_elasticity_analysis(params: dict[str, Any]) -> None:
         
         # Interpretation claire et actionnable
         if abs(elasticity) > 1:
-            st.warning("""
-            **Vos clients sont sensibles au prix**
-            
-            Si vous augmentez vos prix, vous risquez de perdre beaucoup de clients.
-            
-            ➔ **Conseil :** Soyez prudent avec les hausses de prix. 
-            Privilegiez les petites augmentations progressives.
-            """)
+            st.markdown(f"""
+            <div style="
+                background: linear-gradient(135deg, #FFF8F0 0%, #FFF5EB 100%);
+                border: 1px solid rgba(180, 83, 9, 0.3);
+                border-left: 4px solid #B45309;
+                border-radius: 12px;
+                padding: 20px;
+                margin: 16px 0;
+            ">
+                <p style="color: #78350F; font-weight: 700; font-size: 1.1rem; margin: 0 0 12px 0;">
+                    Vos clients sont sensibles au prix
+                </p>
+                <p style="color: #92400E; margin: 0 0 12px 0; line-height: 1.6;">
+                    Si vous augmentez vos prix, vous risquez de perdre beaucoup de clients.
+                </p>
+                <p style="color: #92400E; margin: 0; line-height: 1.6;">
+                    <strong style="color: #78350F;">Conseil :</strong> Soyez prudent avec les hausses de prix. 
+                    Privilegiez les petites augmentations progressives.
+                </p>
+                <p style="color: #78350F; font-weight: 600; margin: 12px 0 0 0; font-size: 0.9rem;">
+                    Elasticite mesuree : {elasticity:.2f}
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
         else:
-            st.success("""
-            **Vos clients sont peu sensibles au prix**
-            
-            Meme si vous augmentez vos prix, vos clients resteront fideles.
-            
-            ➔ **Conseil :** Vous avez une marge de manoeuvre pour 
-            augmenter vos prix et ameliorer vos revenus.
-            """)
+            st.markdown(f"""
+            <div style="
+                background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+                border: 1px solid rgba(6, 95, 70, 0.3);
+                border-left: 4px solid #059669;
+                border-radius: 12px;
+                padding: 20px;
+                margin: 16px 0;
+            ">
+                <p style="color: #064E3B; font-weight: 700; font-size: 1.1rem; margin: 0 0 12px 0;">
+                    Vos clients sont peu sensibles au prix
+                </p>
+                <p style="color: #065F46; margin: 0 0 12px 0; line-height: 1.6;">
+                    Meme si vous augmentez vos prix, vos clients resteront fideles.
+                </p>
+                <p style="color: #065F46; margin: 0; line-height: 1.6;">
+                    <strong style="color: #064E3B;">Conseil :</strong> Vous avez une marge de manoeuvre pour 
+                    augmenter vos prix et ameliorer vos revenus.
+                </p>
+                <p style="color: #064E3B; font-weight: 600; margin: 12px 0 0 0; font-size: 0.9rem;">
+                    Elasticite mesuree : {elasticity:.2f}
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
         
         # Details techniques caches
         with st.expander("Comprendre le calcul"):
