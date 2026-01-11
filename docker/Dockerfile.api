@@ -21,6 +21,7 @@ RUN poetry config virtualenvs.create false \
 # Copier le code source
 COPY src/ ./src/
 COPY configs/ ./configs/
+COPY models/ ./models/
 
 # Variables d'environnement
 ENV PYTHONPATH=/app

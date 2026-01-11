@@ -24,7 +24,7 @@ COPY src/ ./src/
 # Variables d'environnement
 ENV PYTHONPATH=/app
 ENV PYTHONUNBUFFERED=1
-ENV API_URL=http://api:8000
+# API_URL configured via Render environment variable
 
 # Port expose
 EXPOSE 8501
