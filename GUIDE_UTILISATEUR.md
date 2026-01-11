@@ -2,7 +2,7 @@
 
 Bienvenue dans le guide utilisateur de l'application d'optimisation des prix. Cette application permet de recommander, simuler et analyser les prix produits en fonction de la demande estimée par Machine Learning.
 
-## ⚙ Configuration & Paramètres (Sidebar)
+## Configuration & Paramètres (Sidebar)
 
 La barre latérale gauche (Sidebar) est le point de contrôle principal pour configurer les données du produit et les contraintes d'optimisation.
 
@@ -20,7 +20,7 @@ La barre latérale gauche (Sidebar) est le point de contrôle principal pour con
 
 ---
 
-## 📊 Fonctionnalités Principales
+## Fonctionnalités Principales
 
 L'application est divisée en trois onglets accessibles en haut de la page principale.
 
@@ -60,6 +60,6 @@ Cet onglet analyse la sensibilité de la demande par rapport au prix (élasticit
 
 ---
 
-## 🛠 Support
+##  Support
 
 Pour toute question technique ou problème avec l'application, veuillez contacter l'équipe Data Science ou ouvrir un ticket dans le gestionnaire de projet.
