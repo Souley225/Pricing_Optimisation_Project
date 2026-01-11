@@ -47,7 +47,7 @@ Dans le secteur de la grande distribution, fixer le bon prix est un equilibre de
 
 | Element | Lien |
 |---------|------|
-| Application Streamlit | [https://pricing-optimization-ui.onrender.com/](https://pricing-optimization-ui.onrender.com/) |
+| Application Streamlit | [https://pricing-optimisation-project.onrender.com/](https://pricing-optimisation-project.onrender.com/) |
 | API FastAPI (Swagger) | [https://pricing-optimization-api.onrender.com/docs](https://pricing-optimization-api.onrender.com/docs) |
 
 > **Note** : L'application est hebergee sur Render (plan gratuit). Le premier chargement peut prendre quelques secondes si le service est en veille.
