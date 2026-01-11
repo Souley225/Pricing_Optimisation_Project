@@ -65,10 +65,9 @@ data/external/
 *.parquet
 !data/.gitkeep
 
-# Models (root level only, not src/models/)
-/models/
+# Models - tracked for deployment
+# Large data files still ignored
 *.pkl
-*.joblib
 *.onnx
 
 # MLflow
