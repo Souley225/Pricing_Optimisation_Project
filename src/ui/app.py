@@ -1117,13 +1117,26 @@ def render_simulation(params: dict[str, Any]) -> None:
     # Parametres de simulation - empiles pour mobile
     st.subheader("Parametres de simulation")
     
+    # Explication des parametres
+    st.markdown("""
+    <div class="user-note">
+        <strong>Comment configurer la simulation ?</strong><br>
+        <span style="color: #0A2463; font-weight: 600;">Precision</span> : 
+        Nombre de prix testes entre le minimum et le maximum. 
+        Plus le nombre est eleve, plus l'analyse est detaillee.<br>
+        <span style="color: #0A2463; font-weight: 600;">Amplitude</span> : 
+        Etendue des variations de prix a tester. 
+        Par exemple, 30% signifie que l'on teste des prix de -30% a +30% par rapport au prix actuel.
+    </div>
+    """, unsafe_allow_html=True)
+    
     n_points = st.slider(
         "Precision de l'analyse",
         min_value=5,
         max_value=21,
         value=11,
         step=2,
-        help="Plus de points = analyse plus fine mais plus lente",
+        help="Nombre de prix differents a tester (5 = rapide, 21 = tres detaille)",
     )
 
     max_var = st.slider(
@@ -1132,8 +1145,13 @@ def render_simulation(params: dict[str, Any]) -> None:
         max_value=50,
         value=30,
         step=5,
-        help="Jusqu'a combien le prix peut varier (ex: 30% = de -30% a +30%)",
+        help="Ecart maximum par rapport au prix actuel",
     )
+    
+    # Afficher un apercu des prix qui seront testes
+    min_price = params["current_price"] * (1 - max_var / 100)
+    max_price = params["current_price"] * (1 + max_var / 100)
+    st.caption(f"Prix testes : de **{min_price:.2f} EUR** a **{max_price:.2f} EUR** ({n_points} points)")
 
     variations = [
         round(-max_var / 100 + i * (2 * max_var / 100) / (n_points - 1), 3) for i in range(n_points)
