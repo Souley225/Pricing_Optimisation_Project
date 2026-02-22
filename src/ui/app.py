@@ -9,12 +9,12 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-# Configuration de la page - Carrefour branded
+# Configuration de la page
 st.set_page_config(
     page_title="Optimisation des Prix",
     page_icon="shopping_trolley",
     layout="wide",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded",
 )
 
 # ============================================================================
@@ -63,15 +63,15 @@ st.markdown("""
     to { opacity: 1; transform: scale(1); }
 }
 
-/* ===== Premium Design Variables ===== */
+/* ===== Variables de design ===== */
 :root {
-    /* Primary Palette - Refined Carrefour */
+    /* Palette primaire */
     --primary-gradient: linear-gradient(135deg, #0A2463 0%, #1B3A8C 50%, #00387b 100%);
     --primary-blue: #0A2463;
     --primary-blue-light: #1B3A8C;
     --primary-blue-dark: #061539;
     
-    /* Accent Colors - Vibrant & Modern */
+    /* Couleurs d'accent */
     --accent-red: #D62828;
     --accent-red-light: #E85454;
     --accent-red-glow: rgba(214, 40, 40, 0.4);
@@ -140,7 +140,7 @@ html {
     height: 0;
 }
 
-/* ===== Premium Header with Glassmorphism ===== */
+/* ===== En-tete principal ===== */
 .premium-header {
     background: var(--primary-gradient);
     background-size: 200% 200%;
@@ -197,7 +197,7 @@ html {
     z-index: 1;
 }
 
-/* Legacy header support */
+/* Variante d'en-tete */
 .carrefour-header {
     background: var(--primary-gradient);
     background-size: 200% 200%;
@@ -226,7 +226,7 @@ html {
     font-size: 1rem;
 }
 
-/* ===== Premium Info Cards ===== */
+/* ===== Cartes d'information ===== */
 .user-note {
     background: var(--bg-glass);
     backdrop-filter: blur(12px);
@@ -284,7 +284,7 @@ html {
     animation: fadeInUp 0.5s ease-out forwards;
 }
 
-/* ===== Premium Buttons ===== */
+/* ===== Boutons ===== */
 .stButton > button {
     font-family: var(--font-sans) !important;
     min-height: 52px !important;
@@ -342,7 +342,7 @@ html {
     box-shadow: 0 12px 40px rgba(10, 36, 99, 0.4) !important;
 }
 
-/* ===== Premium Metric Cards ===== */
+/* ===== Cartes de metriques ===== */
 [data-testid="stMetric"] {
     background: var(--bg-card);
     border-radius: var(--radius-md);
@@ -407,7 +407,7 @@ button[kind="headerNoPadding"] span {
     visibility: hidden;
 }
 
-/* ===== Premium Sidebar ===== */
+/* ===== Barre laterale ===== */
 [data-testid="stSidebar"] {
     min-width: 300px !important;
     background: var(--bg-glass-dark) !important;
@@ -472,7 +472,7 @@ button[kind="headerNoPadding"] span {
     margin: 1.5rem 0 !important;
 }
 
-/* ===== Modern Pill Tabs ===== */
+/* ===== Onglets ===== */
 .stTabs [data-baseweb="tab-list"] {
     gap: 6px;
     background: var(--bg-secondary);
@@ -515,7 +515,7 @@ button[kind="headerNoPadding"] span {
     display: none !important;
 }
 
-/* ===== Premium Expanders ===== */
+/* ===== Accordeons ===== */
 .streamlit-expanderHeader {
     font-family: var(--font-sans) !important;
     font-size: 1rem !important;
@@ -823,8 +823,8 @@ def check_api_health() -> bool:
 
 
 def wake_up_api(timeout: int = 90) -> bool:
-    """Tente de reveiller l'API si elle est endormie (Render Cold Start)."""
-    # Check if we already verified the API is healthy in this session
+    """Tente de reveiller l'API si elle est en veille."""
+    # Verification prealable dans la session
     if st.session_state.get("api_healthy", False):
         return True
     
@@ -917,8 +917,8 @@ def get_price_simulation(
 
 
 def render_header() -> None:
-    """Affiche l'entete de l'application avec branding Carrefour."""
-    # Branded header
+    """Affiche l'entete de l'application."""
+    # En-tete
     st.markdown("""
     <div class="carrefour-header">
         <h1>Optimisation des Prix</h1>
@@ -1020,7 +1020,7 @@ def render_sidebar() -> dict[str, Any]:
             "max_change": max_change / 100,
         }
 
-    # Contact & Links Section
+    # Section liens
     st.sidebar.divider()
     st.sidebar.markdown("""
     <div style="text-align: center; padding: 10px 0;">
@@ -1060,7 +1060,7 @@ def render_recommendation(params: dict[str, Any]) -> None:
     """Affiche la recommandation de prix."""
     st.header("Recommandation de Prix")
     
-    # Initialize session state for recommendation result
+    # Initialisation du state pour le resultat
     if "recommendation_result" not in st.session_state:
         st.session_state.recommendation_result = None
     if "recommendation_params" not in st.session_state:
@@ -1075,7 +1075,7 @@ def render_recommendation(params: dict[str, Any]) -> None:
     </div>
     """, unsafe_allow_html=True)
 
-    # Create a unique key based on current params to detect changes
+    # Cle unique basee sur les parametres pour detecter les changements
     current_params_key = f"{params['product_id']}_{params['current_price']}_{params['current_volume']}_{params['constraints']}"
 
     if st.button("Calculer le prix optimal", type="primary", use_container_width=True):
@@ -1086,14 +1086,14 @@ def render_recommendation(params: dict[str, Any]) -> None:
                 current_volume=params["current_volume"],
                 constraints=params["constraints"],
             )
-        # Store result in session state
+        # Stocker le resultat dans le session state
         st.session_state.recommendation_result = result
         st.session_state.recommendation_params = current_params_key
 
-    # Display result if available (persisted across reruns)
+    # Afficher le resultat s'il existe (persiste entre les reruns)
     result = st.session_state.recommendation_result
     
-    # Clear result if params changed
+    # Reinitialiser si les parametres ont change
     if st.session_state.recommendation_params != current_params_key:
         result = None
         st.session_state.recommendation_result = None
@@ -1105,7 +1105,7 @@ def render_recommendation(params: dict[str, Any]) -> None:
         st.markdown("---")
         st.subheader("Impact estime")
         
-        # Layout mobile-friendly: 2 colonnes au lieu de 4
+        # Disposition en 2 colonnes
         col1, col2 = st.columns(2)
 
         with col1:
@@ -1217,10 +1217,10 @@ def render_simulation(params: dict[str, Any]) -> None:
             
             st.success(f"**Prix optimal trouve: {best_price:.2f} EUR** (Revenu max: {best_revenue:.2f} EUR)")
 
-            # Graphique interactif - Premium styling
+            # Graphique interactif
             fig = go.Figure()
 
-            # Courbe de revenu (Premium Blue with gradient effect)
+            # Courbe de revenu
             fig.add_trace(
                 go.Scatter(
                     x=df["price"],
@@ -1237,7 +1237,7 @@ def render_simulation(params: dict[str, Any]) -> None:
                 )
             )
 
-            # Courbe de volume (Premium Red)
+            # Courbe de volume
             fig.add_trace(
                 go.Scatter(
                     x=df["price"],
@@ -1326,7 +1326,7 @@ def render_simulation(params: dict[str, Any]) -> None:
 
             st.plotly_chart(fig, use_container_width=True)
             
-            # Aide a la lecture - Premium styled
+            # Legende du graphique
             st.markdown("""
             <div class="user-note">
                 <strong>Comment lire ce graphique ?</strong><br>
