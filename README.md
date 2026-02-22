@@ -1,4 +1,6 @@
-# Optimisation des Prix — Demand-Based Pricing
+# Optimisation des Prix — Tarification basée sur la demande
+
+> **Application d'aide à la décision qui recommande le prix optimal pour chaque produit, afin de maximiser le chiffre d'affaires tout en tenant compte du comportement d'achat des clients.**
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
@@ -18,16 +20,16 @@
   <img src="https://img.shields.io/badge/Enjeu-Maximisation_Revenus-667eea?style=flat-square" alt="Enjeu"/>
 </p>
 
-Dans le secteur de la grande distribution, fixer le bon prix est un equilibre delicat entre volume de ventes et marge. Ce projet propose une **solution predictive** permettant d'optimiser les prix de vente en estimant l'elasticite de la demande, afin que les equipes pricing puissent maximiser leurs revenus.
+Dans le secteur de la grande distribution, fixer le bon prix est un equilibre delicat entre volume de ventes et marge. Ce projet propose une **Methode predictive** permettant d'optimiser les prix de vente en estimant l'elasticite de la demande, afin que les equipes pricing puissent maximiser leurs revenus.
 
 ### Solution
 
-| Fonctionnalite | Description |
-|----------------|-------------|
-| **Recommandation de prix** | Chaque produit recoit un prix optimal calcule a partir de l'estimation de la demande |
-| **Simulation de scenarios** | Visualisation de l'impact de differents prix sur les ventes et revenus |
-| **Analyse de sensibilite** | Mesure de l'elasticite-prix pour comprendre le comportement client |
-| **Interface web** | Application accessible pour consulter les recommandations sans competence technique |
+| Fonctionnalite                    | Description                                                                          |
+| --------------------------------- | ------------------------------------------------------------------------------------ |
+| **Recommandation de prix**  | Chaque produit recoit un prix optimal calcule a partir de l'estimation de la demande |
+| **Simulation de scenarios** | Visualisation de l'impact de differents prix sur les ventes et revenus               |
+| **Analyse de sensibilite**  | Mesure de l'elasticite-prix pour comprendre le comportement client                   |
+| **Interface web**           | Application accessible pour consulter les recommandations sans competence technique  |
 
 ### Resultats
 
@@ -45,14 +47,15 @@ Dans le secteur de la grande distribution, fixer le bon prix est un equilibre de
   </a>
 </p>
 
-| Element | Lien |
-|---------|------|
+| Element               | Lien                                                                                                  |
+| --------------------- | ----------------------------------------------------------------------------------------------------- |
 | Application Streamlit | [https://pricing-optimisation-project.onrender.com/](https://pricing-optimisation-project.onrender.com/) |
 | API FastAPI (Swagger) | [https://pricing-optimization-api.onrender.com/docs](https://pricing-optimization-api.onrender.com/docs) |
 
 > **Note** : L'application est hebergee sur Render (plan gratuit). Le premier chargement peut prendre quelques secondes si le service est en veille.
 
 **Pour tester la demo :**
+
 1. Cliquez sur le lien ci-dessus
 2. Ouvrez le menu lateral pour configurer un produit (prix actuel, volume de ventes)
 3. Cliquez sur "Calculer le prix optimal" pour obtenir la recommandation
@@ -70,30 +73,30 @@ Pipeline complet de Machine Learning pour l'**optimisation des prix** base sur l
 
 ## Stack Technologique
 
-| Composant | Outil | Description |
-|-----------|-------|-------------|
-| Configuration | **Hydra** | Gestion centralisee et modulaire des configurations YAML |
-| Versioning des donnees | **DVC** | Reproductibilite et tracabilite des pipelines de donnees |
-| Suivi des experiences | **MLflow** | Logging des metriques, artefacts et registre de modeles |
-| Optimisation | **Optuna** | Recherche automatique des hyperparametres optimaux |
-| Optimisation de prix | **SciPy** | Algorithmes d'optimisation sous contraintes |
-| API de prediction | **FastAPI** | Service REST haute performance avec documentation Swagger |
-| Interface utilisateur | **Streamlit** | Application web interactive pour les recommandations |
-| Visualisation | **Plotly** | Graphiques interactifs pour l'analyse des scenarios |
-| Conteneurisation | **Docker Compose** | Orchestration multi-services pour le deploiement |
-| CI/CD | **GitHub Actions** | Automatisation des tests et du deploiement |
+| Composant              | Outil                    | Description                                               |
+| ---------------------- | ------------------------ | --------------------------------------------------------- |
+| Configuration          | **Hydra**          | Gestion centralisee et modulaire des configurations YAML  |
+| Versioning des donnees | **DVC**            | Reproductibilite et tracabilite des pipelines de donnees  |
+| Suivi des experiences  | **MLflow**         | Logging des metriques, artefacts et registre de modeles   |
+| Optimisation           | **Optuna**         | Recherche automatique des hyperparametres optimaux        |
+| Optimisation de prix   | **SciPy**          | Algorithmes d'optimisation sous contraintes               |
+| API de prediction      | **FastAPI**        | Service REST haute performance avec documentation Swagger |
+| Interface utilisateur  | **Streamlit**      | Application web interactive pour les recommandations      |
+| Visualisation          | **Plotly**         | Graphiques interactifs pour l'analyse des scenarios       |
+| Conteneurisation       | **Docker Compose** | Orchestration multi-services pour le deploiement          |
+| CI/CD                  | **GitHub Actions** | Automatisation des tests et du deploiement                |
 
 ---
 
 ## Informations du Projet
 
-| Element | Valeur |
-|---------|--------|
-| Dataset | `mmitchell/online-retail-ii` (Kaggle) |
-| Variable cible | Volume de ventes (regression) |
-| Langage | Python 3.11+ |
-| Gestionnaire de dependances | Poetry |
-| Licence | MIT |
+| Element                     | Valeur                                  |
+| --------------------------- | --------------------------------------- |
+| Dataset                     | `mmitchell/online-retail-ii` (Kaggle) |
+| Variable cible              | Volume de ventes (regression)           |
+| Langage                     | Python 3.11+                            |
+| Gestionnaire de dependances | Poetry                                  |
+| Licence                     | MIT                                     |
 
 ---
 
@@ -139,17 +142,16 @@ Pipeline complet de Machine Learning pour l'**optimisation des prix** base sur l
 
 ### Flux MLflow
 
-| Etape | Description |
-|-------|-------------|
-| **Tracking** | Chaque run d'entrainement est enregistre avec ses hyperparametres et metriques |
+| Etape                 | Description                                                                          |
+| --------------------- | ------------------------------------------------------------------------------------ |
+| **Tracking**    | Chaque run d'entrainement est enregistre avec ses hyperparametres et metriques       |
 | **Comparaison** | Interface MLflow UI pour comparer les experiences et selectionner le meilleur modele |
-| **Registry** | Le meilleur modele est promu au stage "Production" dans le registre |
-| **Serving** | L'API charge automatiquement le modele marque "Production" depuis le registre |
+| **Registry**    | Le meilleur modele est promu au stage "Production" dans le registre                  |
+| **Serving**     | L'API charge automatiquement le modele marque "Production" depuis le registre        |
 
 > **Note** : Le Model Registry MLflow permet de versionner les modeles et de gerer leur cycle de vie (Staging → Production → Archived). Meme si le registry distant n'est pas encore configure, le systeme est pret pour cette integration.
 
 ---
-
 
 ## Structure du Projet
 
@@ -255,23 +257,23 @@ dvc repro
 
 ### Etapes du pipeline
 
-| Etape | Commande | Description |
-|-------|----------|-------------|
-| `data` | `make data` | Telechargement et preparation des donnees Kaggle |
-| `features` | `make features` | Feature engineering et generation du prix synthetique |
-| `train` | `make train` | Entrainement avec optimisation Optuna et logging MLflow |
-| `evaluate` | `make evaluate` | Evaluation des metriques et calcul de l'elasticite |
-| `optimize` | `make optimize` | Generation des recommandations de prix optimaux |
+| Etape        | Commande          | Description                                             |
+| ------------ | ----------------- | ------------------------------------------------------- |
+| `data`     | `make data`     | Telechargement et preparation des donnees Kaggle        |
+| `features` | `make features` | Feature engineering et generation du prix synthetique   |
+| `train`    | `make train`    | Entrainement avec optimisation Optuna et logging MLflow |
+| `evaluate` | `make evaluate` | Evaluation des metriques et calcul de l'elasticite      |
+| `optimize` | `make optimize` | Generation des recommandations de prix optimaux         |
 
 ### Features creees
 
-| Feature | Description |
-|---------|-------------|
-| **price_synthetic** | Prix synthetique genere a partir des quantiles |
-| **day_of_week** | Jour de la semaine de la transaction |
-| **month** | Mois de la transaction |
-| **is_weekend** | Indicateur de week-end |
-| **category_encoded** | Encodage des categories de produits |
+| Feature                    | Description                                    |
+| -------------------------- | ---------------------------------------------- |
+| **price_synthetic**  | Prix synthetique genere a partir des quantiles |
+| **day_of_week**      | Jour de la semaine de la transaction           |
+| **month**            | Mois de la transaction                         |
+| **is_weekend**       | Indicateur de week-end                         |
+| **category_encoded** | Encodage des categories de produits            |
 
 ---
 
@@ -279,20 +281,20 @@ dvc repro
 
 Le pipeline teste automatiquement plusieurs algorithmes et selectionne le meilleur :
 
-| Modele | Description |
-|--------|-------------|
+| Modele             | Description                                                   |
+| ------------------ | ------------------------------------------------------------- |
 | **LightGBM** | Gradient boosting optimise pour la vitesse (modele principal) |
-| ElasticNet | Modele de reference lineaire avec regularisation |
+| ElasticNet         | Modele de reference lineaire avec regularisation              |
 
 L'optimisation des hyperparametres est realisee par **Optuna** avec validation croisee.
 
 ### Metriques de Performance
 
 | Metrique | Baseline (ElasticNet) | LightGBM |
-|----------|----------------------|----------|
-| RMSE | 100.67 | 77.59 |
-| MAE | 38.50 | 29.85 |
-| R² | 0.65 | 0.78 |
+| -------- | --------------------- | -------- |
+| RMSE     | 100.67                | 77.59    |
+| MAE      | 38.50                 | 29.85    |
+| R²      | 0.65                  | 0.78     |
 
 ---
 
@@ -310,11 +312,11 @@ docker compose up -d
 
 ### Services disponibles
 
-| Service | URL | Description |
-|---------|-----|-------------|
-| MLflow UI | http://localhost:5000 | Suivi des experiences et registre |
+| Service     | URL                        | Description                       |
+| ----------- | -------------------------- | --------------------------------- |
+| MLflow UI   | http://localhost:5000      | Suivi des experiences et registre |
 | API FastAPI | http://localhost:8000/docs | Documentation interactive Swagger |
-| Streamlit | http://localhost:8501 | Interface utilisateur graphique |
+| Streamlit   | http://localhost:8501      | Interface utilisateur graphique   |
 
 ### Arreter les services
 
@@ -371,11 +373,11 @@ Permet de simuler l'impact de plusieurs variations de prix sur un produit.
 
 L'application Streamlit permet de :
 
-| Onglet | Fonctionnalite |
-|--------|----------------|
-| **Recommandation** | Obtenir le prix optimal en un clic |
-| **Simulation** | Visualiser l'impact de differents prix sur revenus et ventes |
-| **Sensibilite** | Analyser l'elasticite-prix du produit |
+| Onglet                   | Fonctionnalite                                               |
+| ------------------------ | ------------------------------------------------------------ |
+| **Recommandation** | Obtenir le prix optimal en un clic                           |
+| **Simulation**     | Visualiser l'impact de differents prix sur revenus et ventes |
+| **Sensibilite**    | Analyser l'elasticite-prix du produit                        |
 
 Consultez le [Guide Utilisateur](GUIDE_UTILISATEUR.md) pour une visite guidee complete.
 
@@ -414,11 +416,11 @@ make typecheck
 
 Les workflows **GitHub Actions** automatisent :
 
-| Workflow | Description |
-|----------|-------------|
-| Linting | Analyse statique avec Ruff et MyPy |
-| Tests | Execution des tests unitaires avec Pytest |
-| Build | Construction et publication des images Docker |
+| Workflow   | Description                                             |
+| ---------- | ------------------------------------------------------- |
+| Linting    | Analyse statique avec Ruff et MyPy                      |
+| Tests      | Execution des tests unitaires avec Pytest               |
+| Build      | Construction et publication des images Docker           |
 | Keep-Alive | Ping regulier pour maintenir les services Render actifs |
 
 ---
@@ -441,16 +443,16 @@ AWS_SECRET_ACCESS_KEY=...
 
 ## Commandes Utiles
 
-| Commande | Description |
-|----------|-------------|
-| `dvc repro` | Executer le pipeline complet |
-| `make api` | Lancer l'API FastAPI en local |
-| `make ui` | Lancer l'interface Streamlit en local |
-| `make lint` | Verifier la qualite du code |
-| `make test` | Executer les tests unitaires |
-| `docker compose up -d` | Demarrer tous les services Docker |
-| `docker compose down` | Arreter les services Docker |
-| `poetry run mlflow ui` | Lancer l'interface MLflow locale |
+| Commande                 | Description                           |
+| ------------------------ | ------------------------------------- |
+| `dvc repro`            | Executer le pipeline complet          |
+| `make api`             | Lancer l'API FastAPI en local         |
+| `make ui`              | Lancer l'interface Streamlit en local |
+| `make lint`            | Verifier la qualite du code           |
+| `make test`            | Executer les tests unitaires          |
+| `docker compose up -d` | Demarrer tous les services Docker     |
+| `docker compose down`  | Arreter les services Docker           |
+| `poetry run mlflow ui` | Lancer l'interface MLflow locale      |
 
 ---
 

@@ -18,8 +18,7 @@ st.set_page_config(
 )
 
 # ============================================================================
-# PREMIUM DESIGN SYSTEM - World-Class UI/UX
-# Enhanced Carrefour Brand with Glassmorphism & Modern Effects
+
 # ============================================================================
 st.markdown("""
 <style>
