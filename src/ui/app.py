@@ -391,6 +391,47 @@ hr { border: none !important; border-top: 1px solid var(--border-light) !importa
     background: var(--bg-card) !important;
     border-right: 1px solid var(--border-color) !important;
 }
+
+/* ===== Mobile Responsiveness ===== */
+@media (max-width: 768px) {
+    .slim-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 0;
+        gap: 8px;
+    }
+    
+    .slim-header-title { font-size: 1.5rem; }
+    .slim-header-sub { font-size: 0.65rem; }
+    
+    .section-label { font-size: 1.1rem !important; }
+    
+    .result-card { padding: 20px; }
+    .result-price { font-size: 2.2rem; }
+    .result-currency { font-size: 1rem; }
+    .result-badge { font-size: 0.75rem; padding: 4px 8px; }
+    
+    .stTabs [data-baseweb="tab"] {
+        padding: 10px 12px !important;
+        font-size: 0.8rem !important;
+        min-height: 44px !important;
+    }
+    
+    [data-testid="stMetricValue"] {
+        font-size: 1.6rem !important;
+    }
+    
+    .stButton > button {
+        min-height: 48px !important;
+        font-size: 0.85rem !important;
+    }
+    
+    .elasticity-card { padding: 16px; }
+    .elasticity-title { font-size: 1.1rem; }
+    .elasticity-body { font-size: 0.85rem; }
+    
+    hr { margin: 24px 0 !important; }
+}
 </style>
 """, unsafe_allow_html=True)
 

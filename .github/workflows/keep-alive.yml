@@ -3,7 +3,7 @@ name: Keep Alive
 on:
   schedule:
     # Every 14 minutes
-    - cron: '*/14 * * * *'
+    - cron: '*/1400 * * * *'
   workflow_dispatch: # Manual trigger
 
 jobs:
