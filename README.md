@@ -42,17 +42,17 @@ Dans le secteur de la grande distribution, fixer le bon prix est un equilibre de
 ## Demo en Ligne
 
 <p align="center">
-  <a href="https://pricing-optimization-ui.onrender.com/" target="_blank">
+  <a href="https://pricingoptimisationproject-production.up.railway.app/" target="_blank">
     <img src="https://img.shields.io/badge/Tester_la_Demo-En_Ligne-667eea?style=for-the-badge&logo=streamlit&logoColor=white" alt="Demo"/>
   </a>
 </p>
 
 | Element               | Lien                                                                                                  |
 | --------------------- | ----------------------------------------------------------------------------------------------------- |
-| Application Streamlit | [https://pricing-optimisation-project.onrender.com/](https://pricing-optimisation-project.onrender.com/) |
-| API FastAPI (Swagger) | [https://pricing-optimization-api.onrender.com/docs](https://pricing-optimization-api.onrender.com/docs) |
+| Application Streamlit | [https://pricingoptimisationproject-production.up.railway.app/](https://pricingoptimisationproject-production.up.railway.app/) |
+| API FastAPI (Swagger) | [https://pricing-api-production-667e.up.railway.app/docs](https://pricing-api-production-667e.up.railway.app/docs) |
 
-> **Note** : L'application est hebergee sur Render (plan gratuit). Le premier chargement peut prendre quelques secondes si le service est en veille.
+> **Note** : L'application est hebergee sur Railway. Le premier chargement peut prendre quelques secondes si le service est en veille.
 
 **Pour tester la demo :**
 
@@ -421,7 +421,7 @@ Les workflows **GitHub Actions** automatisent :
 | Linting    | Analyse statique avec Ruff et MyPy                      |
 | Tests      | Execution des tests unitaires avec Pytest               |
 | Build      | Construction et publication des images Docker           |
-| Keep-Alive | Ping regulier pour maintenir les services Render actifs |
+| Keep-Alive | Ping regulier pour maintenir les services Railway actifs |
 
 ---
 
