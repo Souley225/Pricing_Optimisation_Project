@@ -51,8 +51,9 @@ Dans le secteur de la grande distribution, fixer le bon prix est un equilibre de
 | --------------------- | ----------------------------------------------------------------------------------------------------- |
 | Application Streamlit | [https://pricingoptimisationproject-production.up.railway.app/](https://pricingoptimisationproject-production.up.railway.app/) |
 | API FastAPI (Swagger) | [https://pricing-api-production-667e.up.railway.app/docs](https://pricing-api-production-667e.up.railway.app/docs) |
+| Backup (Hugging Face) | [https://huggingface.co/spaces/sallsou/pricing-optimization](https://huggingface.co/spaces/sallsou/pricing-optimization) |
 
-> **Note** : L'application est hebergee sur Railway. Le premier chargement peut prendre quelques secondes si le service est en veille.
+> **Note** : L'application est hebergee sur Railway. En cas d'indisponibilite, utilisez le lien Hugging Face Spaces ci-dessus. Le premier chargement peut prendre quelques secondes si le service est en veille.
 
 **Pour tester la demo :**
 
